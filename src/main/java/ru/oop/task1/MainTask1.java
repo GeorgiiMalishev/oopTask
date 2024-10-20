@@ -21,7 +21,8 @@ public class MainTask1 {
      * Переехать из текущего места в заданную точку
      */
     public void moveTo(Person person, Position destination) {
-        // TODO
-        assert person.getPosition() == destination;
+        Car car = new Car(person);
+        car.moveTo(destination);
+        person.walk(destination);
     }
 }
