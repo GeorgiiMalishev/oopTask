@@ -11,6 +11,7 @@ class ContainerTest {
     void testAdd(){
         Item item = new Item(1);
         Container container = new Container();
+        Assertions.assertEquals(0, container.size());
         container.add(item);
         Assertions.assertEquals(1, container.size());
         Assertions.assertTrue(container.contains(item));

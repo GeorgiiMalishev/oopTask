@@ -35,6 +35,6 @@ class NoteLogicTest {
         noteLogic.handleMessage("/add Note");
         noteLogic.handleMessage("/add Note2");
         noteLogic.handleMessage("/del 2");
-        Assertions.assertEquals("Your notes:\n1.EditedNote", noteLogic.handleMessage("/notes"));
+        Assertions.assertEquals("Your notes:\n1.Note", noteLogic.handleMessage("/notes"));
     }
 }
