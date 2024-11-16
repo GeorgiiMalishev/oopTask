@@ -6,11 +6,26 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Тест логики бота
+ */
 class BotLogicTest {
 
+    /**
+     * Пользователь
+     */
     private User user;
+    /**
+     * Фейк бот для тестов
+     */
     private FakeBot fakeBot;
+    /**
+     * Логика бота, которую нужно проверить
+     */
     private BotLogic botLogic;
+    /**
+     * Текущий индекс сообщения
+     */
     private int messageIndex;
 
     /**
@@ -18,7 +33,7 @@ class BotLogicTest {
      */
     @BeforeEach
     void setUp() {
-        user = new User(Long.MIN_VALUE);
+        user = new User(123L);
         fakeBot = new FakeBot();
         botLogic = new BotLogic(fakeBot);
         messageIndex = -1;
@@ -38,7 +53,7 @@ class BotLogicTest {
     }
 
     /**
-     * Тест команды /test с не правильными ответами
+     * Тест команды /test с неправильными ответами
      */
     @Test
     void testWrongTest(){
@@ -70,10 +85,10 @@ class BotLogicTest {
     }
 
     /**
-     * Тест для команды /repeat
+     * Тест для команды /repeat, после неправильного ответа
      */
     @Test
-    void testRepeat(){
+    void testWrongRepeat(){
         botLogic.processCommand(user,"/test");
         messageIndex++;
         botLogic.processCommand(user,"10");
@@ -84,5 +99,18 @@ class BotLogicTest {
         botLogic.processCommand(user,"100");
         messageIndex++;
         assertEquals("Правильный ответ!", fakeBot.getMessage(messageIndex));
+        botLogic.processCommand(user,"/repeat");
+        Assertions.assertEquals("Нет вопросов для повторения", fakeBot.getLastMessage());
+    }
+
+    /**
+     * Тест для команды /repeat, когда нет неправильных ответов
+     */
+    @Test
+    void testRightRepeat(){
+        botLogic.processCommand(user,"/test");
+        botLogic.processCommand(user,"100");
+        botLogic.processCommand(user,"/repeat");
+        Assertions.assertEquals("Нет вопросов для повторения", fakeBot.getLastMessage());
     }
 }

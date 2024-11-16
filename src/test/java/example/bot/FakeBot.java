@@ -7,6 +7,9 @@ import java.util.List;
  * Фейковый бот для тестов
  */
 public class FakeBot implements Bot {
+    /**
+     * Сообщения, отправленные ботом
+     */
     private final List<String> messages = new ArrayList<>();
 
     @Override
