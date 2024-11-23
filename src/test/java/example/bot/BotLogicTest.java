@@ -23,10 +23,6 @@ class BotLogicTest {
      * Логика бота, которую нужно проверить
      */
     private BotLogic botLogic;
-    /**
-     * Текущий индекс сообщения
-     */
-    private int messageIndex;
 
     /**
      * Инициализация бота и индекса сообщения перед каждым тестом
@@ -36,7 +32,6 @@ class BotLogicTest {
         user = new User(123L);
         fakeBot = new FakeBot();
         botLogic = new BotLogic(fakeBot);
-        messageIndex = -1;
     }
 
     /**
@@ -45,11 +40,9 @@ class BotLogicTest {
     @Test
     void testRightTest() {
         botLogic.processCommand(user,"/test");
-        messageIndex++;
-        Assertions.assertEquals("Вычислите степень: 10^2", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Вычислите степень: 10^2", fakeBot.getMessage(0));
         botLogic.processCommand(user,"100");
-        messageIndex++;
-        Assertions.assertEquals("Правильный ответ!", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Правильный ответ!", fakeBot.getMessage(1));
     }
 
     /**
@@ -58,11 +51,9 @@ class BotLogicTest {
     @Test
     void testWrongTest(){
         botLogic.processCommand(user,"/test");
-        messageIndex++;
-        Assertions.assertEquals("Вычислите степень: 10^2", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Вычислите степень: 10^2", fakeBot.getMessage(0));
         botLogic.processCommand(user,"10");
-        messageIndex++;
-        Assertions.assertEquals("Вы ошиблись, верный ответ: 100", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Вы ошиблись, верный ответ: 100", fakeBot.getMessage(1));
     }
 
     /**
@@ -71,14 +62,11 @@ class BotLogicTest {
     @Test
     void testNotify() throws InterruptedException {
         botLogic.processCommand(user,"/notify");
-        messageIndex++;
-        Assertions.assertEquals("Введите текст напоминания", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Введите текст напоминания", fakeBot.getMessage(0));
         botLogic.processCommand(user,"напоминание");
-        messageIndex++;
-        Assertions.assertEquals("Через сколько секунд напомнить?", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Через сколько секунд напомнить?", fakeBot.getMessage(1));
         botLogic.processCommand(user,"1");
-        messageIndex++;
-        Assertions.assertEquals("Напоминание установлено", fakeBot.getMessage(messageIndex));
+        Assertions.assertEquals("Напоминание установлено", fakeBot.getMessage(2));
         Assertions.assertNotEquals("Сработало напоминание: 'напоминание'", fakeBot.getLastMessage());
         Thread.sleep(1200);
         Assertions.assertEquals("Сработало напоминание: 'напоминание'", fakeBot.getLastMessage());
@@ -90,15 +78,11 @@ class BotLogicTest {
     @Test
     void testWrongRepeat(){
         botLogic.processCommand(user,"/test");
-        messageIndex++;
         botLogic.processCommand(user,"10");
-        messageIndex+=2;
         botLogic.processCommand(user,"/repeat");
-        messageIndex++;
         Assertions.assertEquals("Вычислите степень: 10^2", fakeBot.getLastMessage());
         botLogic.processCommand(user,"100");
-        messageIndex++;
-        assertEquals("Правильный ответ!", fakeBot.getMessage(messageIndex));
+        assertEquals("Правильный ответ!", fakeBot.getMessage(4));
         botLogic.processCommand(user,"/repeat");
         Assertions.assertEquals("Нет вопросов для повторения", fakeBot.getLastMessage());
     }
