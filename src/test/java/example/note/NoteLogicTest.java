@@ -3,7 +3,9 @@ package example.note;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * Тест команд в NoteLogic
+ */
 class NoteLogicTest {
     /**
      * Проверка команд /add и /notes

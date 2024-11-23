@@ -3,6 +3,9 @@ package example.container;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Тест методов добавления и удаления в Container
+ */
 class ContainerTest {
     /**
      * Проверка добавления элемента
