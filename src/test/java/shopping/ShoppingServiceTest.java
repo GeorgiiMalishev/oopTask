@@ -1,6 +1,4 @@
 package shopping;
-
-
 import customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -133,6 +131,18 @@ class ShoppingServiceTest {
     public void buyEmptyCartTest() throws BuyException {
         assertFalse(shoppingService.buy(cart));
         verify(productDaoMock, Mockito.never()).save(Mockito.any(Product.class));
+    }
+
+    /**
+     * Тест на покупку товара, который закончился уже после добавления в корзину
+     */
+    @Test
+    public void buyEmptyProduct() throws BuyException {
+        Cart cart2 = new Cart(customer);
+        cart.add(product, 3);
+        cart2.add(product, 3);
+        shoppingService.buy(cart);
+        assertFalse(shoppingService.buy(cart2));
     }
 
     /**
